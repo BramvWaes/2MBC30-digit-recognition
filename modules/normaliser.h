@@ -10,7 +10,7 @@
 class normaliser {
 public:
     float threshold_value;
-    float input_matrix[16][16];
+    float input_array[256];
 
     std::array<std::array<int, 16>, 16> normalise();
 };

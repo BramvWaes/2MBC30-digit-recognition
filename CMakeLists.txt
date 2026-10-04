@@ -5,4 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(2MBC30_Path_Traversal main.cpp
         modules/normaliser.cpp
-        modules/normaliser.h)
+        modules/normaliser.h
+        classes/Node.cpp
+        classes/Node.h
+        modules/compactor.cpp
+        modules/compactor.h)
