@@ -25,6 +25,10 @@ target_include_directories(path_traversal_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR
 add_executable(2MBC30_Path_Traversal main.cpp)
 target_link_libraries(2MBC30_Path_Traversal PRIVATE path_traversal_core)
 
+add_executable(evaluate evaluate.cpp)
+target_link_libraries(evaluate PRIVATE path_traversal_core)
+target_compile_definitions(evaluate PRIVATE DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
+
 include(FetchContent)
 FetchContent_Declare(googletest
         URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip)
