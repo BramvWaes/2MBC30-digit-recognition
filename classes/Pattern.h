@@ -68,6 +68,7 @@ struct Step {
     Range turn;
     std::function<bool(const Piece&)> extra_check;
     double corner_size = 0;  // longest stretch a corner may absorb, relative to the figure size
+    bool either_side = false;  // corner turn is compared by size only, ignoring whether it goes left or right
 
     bool accepts(const Piece& piece) const;
 };
@@ -78,6 +79,9 @@ Step arc(Shape shape = {});
 // to only a few edges whose turns add up to well under 180 degrees.
 Step semicircle(Rotation rotation, Shape shape = {});
 Step corner(Range turn, double max_size = 0.25);
+// Doubling back on the stroke, e.g. where a dead end is traced out and back. Whether such a turn comes out as
+// left or right depends on pixel noise, so only its size is checked.
+Step reversal(double tolerance = 40, double max_size = 0.25);
 Step custom(std::string name, std::function<bool(const Piece&)> check);
 
 struct MatchResult {
@@ -112,6 +116,7 @@ private:
     struct Join {
         std::optional<double> heading;  // direction the previous piece ended in
         std::optional<Range> corner;    // turn required by a pending corner step
+        bool either_side = false;       // whether that corner ignores the direction of the turn
         double turned = 0;              // turn already made inside the pending corner
     };
 

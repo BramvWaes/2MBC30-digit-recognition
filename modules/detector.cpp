@@ -1,13 +1,17 @@
 #include "detector.h"
 
+#include "tracer.h"
+
 std::optional<std::string> detector::detect(const compactor& compacted) const {
-    if (compacted.segments.size() != 1) {
-        return std::nullopt;
+    std::vector<Stroke> strokes;
+    for (const std::vector<Node*>& path : traces(compacted)) {
+        strokes.push_back(Stroke::from_path(path));
     }
-    Stroke stroke = Stroke::from_path(compacted.segments.front().path);
     for (const Pattern& pattern : patterns) {
-        if (pattern.match(stroke).matched) {
-            return pattern.label;
+        for (const Stroke& stroke : strokes) {
+            if (pattern.match(stroke).matched) {
+                return pattern.label;
+            }
         }
     }
     return std::nullopt;

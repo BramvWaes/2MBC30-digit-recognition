@@ -17,7 +17,9 @@ add_library(path_traversal_core
         patterns/digits.cpp
         patterns/digits.h
         modules/detector.cpp
-        modules/detector.h)
+        modules/detector.h
+        modules/tracer.cpp
+        modules/tracer.h)
 target_include_directories(path_traversal_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(2MBC30_Path_Traversal main.cpp)

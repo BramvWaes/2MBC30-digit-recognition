@@ -81,6 +81,13 @@ Step corner(Range turn, double max_size) {
     return Step{"corner", true, {}, turn, {}, max_size};
 }
 
+Step reversal(double tolerance, double max_size) {
+    Step step = corner(Range{180 - tolerance, 180 + tolerance}, max_size);
+    step.name = "reversal";
+    step.either_side = true;
+    return step;
+}
+
 Step custom(std::string name, std::function<bool(const Piece&)> check) {
     return Step{std::move(name), false, {}, {}, std::move(check)};
 }
@@ -148,7 +155,7 @@ bool Pattern::search(const Stroke& stroke, std::size_t step, std::size_t vertex,
         if (!join.heading || join.corner) {
             return false;
         }
-        if (search(stroke, step + 1, vertex, Join{join.heading, current.turn, 0}, result)) {
+        if (search(stroke, step + 1, vertex, Join{join.heading, current.turn, current.either_side, 0}, result)) {
             return true;
         }
         for (std::size_t next = vertex + 1; next < stroke.vertices.size(); next++) {
@@ -157,7 +164,8 @@ bool Pattern::search(const Stroke& stroke, std::size_t step, std::size_t vertex,
                 break;
             }
             double turned = turn_between(*join.heading, rounding.start_heading) + rounding.turning;
-            if (search(stroke, step + 1, next, Join{rounding.end_heading, current.turn, turned}, result)) {
+            if (search(stroke, step + 1, next, Join{rounding.end_heading, current.turn, current.either_side, turned},
+                       result)) {
                 return true;
             }
         }
@@ -170,6 +178,9 @@ bool Pattern::search(const Stroke& stroke, std::size_t step, std::size_t vertex,
         }
         if (join.heading) {
             double turn = join.turned + turn_between(*join.heading, piece.start_heading);
+            if (join.either_side) {
+                turn = std::abs(turn);
+            }
             if (join.corner ? !join.corner->contains(turn) : std::abs(turn) > smooth_join) {
                 continue;
             }

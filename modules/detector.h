@@ -12,8 +12,7 @@ class detector {
 public:
     std::vector<Pattern> patterns = digits::all();
 
-    // Label of the first pattern that matches the compacted figure. Only figures that compact to a single segment
-    // are supported for now.
+    // Label of the first pattern that matches any way of tracing the compacted figure in one go.
     std::optional<std::string> detect(const compactor& compacted) const;
 };
 
