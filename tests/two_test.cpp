@@ -165,19 +165,6 @@ namespace {
         "....########....",
         ".....######.....",
     };
-
-    const std::vector<std::string> four = {
-        "................",
-        "...##.....##....",
-        "...##.....##....",
-        "...##.....##....",
-        "...##.....##....",
-        "...#########....",
-        "...#########....",
-        "..........##....",
-        "..........##....",
-        "..........##....",
-    };
 }
 
 TEST(Two, MatchesThickTwo) {
@@ -227,11 +214,20 @@ TEST(Detector, DetectsTwo) {
     EXPECT_EQ(detect(thin_two), "2");
 }
 
-TEST(Detector, ReturnsNothingForOtherFigures) {
-    EXPECT_EQ(detect(seven), std::nullopt);
-    EXPECT_EQ(detect(zero), std::nullopt);
+TEST(Detector, ReturnsNothingForFiguresThatAreNotDigits) {
+    EXPECT_EQ(detect(z), std::nullopt);
+    EXPECT_EQ(detect(no_hook), std::nullopt);
 }
 
-TEST(Detector, ReturnsNothingForFiguresWithJunctions) {
-    EXPECT_EQ(detect(four), std::nullopt);
+TEST(Detector, ReturnsNothingForFiguresThatCannotBeTracedInOneGo) {
+    EXPECT_EQ(detect({
+        "................",
+        ".......#........",
+        ".......#........",
+        ".......#........",
+        "...#########....",
+        ".......#........",
+        ".......#........",
+        ".......#........",
+    }), std::nullopt);
 }
