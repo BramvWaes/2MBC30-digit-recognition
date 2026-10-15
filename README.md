@@ -5,8 +5,19 @@ This repository contains the code used to recognize digits by their shape. The r
 * `modules` contains the logic modules used in the process
 * `patterns` uses the aforementioned `pattern` class to define behaviour per digit
 
+## Running the program
+In order to run the program, the following programs need to be installed:
+* CMake 4.3 or newer
+* A C++ 20 SDK
+```shell
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --target evaluate --config Release
+./build/evaluate
+./build/Release/evaluate
+```
+
 ## Output
-The analysis is deterministic, meaning the output should be the same every time. Running the program resulted in the following output, which can be verified by ...
+The analysis is deterministic, meaning the output should be the same every time. Running the program resulted in the following output, which can be verified by running the above program
 ```shellsession
 === test set (2007 images) ===
 
